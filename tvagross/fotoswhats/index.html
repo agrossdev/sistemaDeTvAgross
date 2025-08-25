@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="gerarimagem.css">
+    <script src="gerarimagem.js"></script>
+    <script src="ipapi.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@sweetalert2/theme-bulma/bulma.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+        crossorigin="anonymous"></script>
+    <script type="text/javascript" src="html2canvas.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerar Imagem TV</title>
+</head>
+
+<body>
+    <div id="divbackground">
+        <div id="divlogos">
+            <img src="../imagens/Nota Fiscal Premiada.png" alt="" id="imagemgrr" onclick="recarregarimagens();">
+            <img src="../imagens/agross.png" alt="" onclick="recarregarimagens();">
+            <img src="../imagens/tvagross.png" alt="" onclick="recarregarimagens();">
+        </div>
+
+        <div id="divformulario">
+            <div id="divmodelofoto">
+                <label for="">Modelo:</label>
+                <select name="" id="selectmodelofoto" onchange="trocarmodelo(this.value)">
+                    <option value="selmodelo" selected>SEL. MODELO</option>
+                    <option value="paisagem">Paisagem</option>
+                    <option value="retrato">Retrato</option>
+                    <option value="retrato2">Retrato 2</option>
+                </select>
+            </div>
+            <div id="divarquivo">
+                <label for="">Foto:</label>
+                <input class="form-control form-control-sm" id="formFileSm" type="file" onchange="readURL(this)">
+            </div>
+            <div id="divnome">
+                <label for="inputnome">Nome(s):</label>
+                <input type="text" id="inputnome" class="inputnometodos" maxlength="-1">
+            </div>
+            <div id="divcidade">
+                <label for="inputrevenda">Revenda:</label>
+                <input type="text" id="inputrevenda" class="inputnometodos" maxlength="-1">
+            </div>
+            <button type="button" id="btnmontar" class="btn btn-primary" onclick="montar();">MONTAR</button>
+            <button type="button" id="btnenviar" class="btn btn-success">ENVIAR</button>
+        </div>
+
+        <div id="divimagem">
+            <div id="fotocliente"></div>
+            <div id="divnomefoto">
+                <p id="nomeerevendap">NOME - REVENDA</p>
+            </div>
+            <img src="../imagens/fotoswhats/nomeerevenda.png" alt=""
+                style="width: 60%; position: absolute; bottom: 0; left: 0; right: 0; margin: auto;">
+        </div>
+        <div id="previewImage"></div>
+
+    </div>
+
+
+    <script>
+        function salvarfotowpp(numero) {
+            html2canvas(document.getElementById('divimagem'), { allowTaint: true, scale: 3, windowWidth: Window.innerWidth * 2, windowHeight: Window.innerHeight * 2 }).then(function (canvas) {
+                document.getElementById("previewImage").appendChild(canvas);
+                var dataURL = canvas.toDataURL();
+
+                // Converte a imagem base64 em um blob
+                fetch(dataURL)
+                    .then(res => res.blob())
+                    .then(blob => {
+                        var formData = new FormData();
+
+                        // Adiciona o blob como um arquivo no formulário
+                        formData.append("image", blob, `image${Number(numero) + 1}.png`);
+
+                        // Envia o formulário para o servidor
+                        fetch('http://localhost:8000/salvar-imagem', {
+                            method: 'POST',
+                            body: formData
+                        })
+                            .then(response => {
+                                if (response.ok) {
+                                    console.log('Arquivo salvo com sucesso');
+                                } else {
+                                    throw new Error('Erro ao salvar o arquivo');
+                                }
+                            })
+                            .catch(error => console.error(error));
+                    });
+                document.getElementById('divimagem').style.display = 'none';
+            });
+        }
+
+
+        // function screenshot(numero) {
+            
+
+
+        //     html2canvas(document.getElementById('divimagem'), { allowTaint: true, scale: 3, windowWidth: Window.innerWidth * 2, windowHeight: Window.innerHeight * 2 }).then(function (canvas) {
+        //         //var preview = document.getElementById("previewImage");
+        //         document.getElementById("previewImage").appendChild(canvas);
+        //         var dataURL = canvas.toDataURL();
+        //         $.ajax({
+        //             type: "POST",
+        //             url: "save-capture.php",
+        //             data: {
+        //                 imgBase64: dataURL,
+        //                 numero: (Number(numero) + 1)
+                        
+        //             }
+        //         }).done(function (o) {
+
+        //             console.log('saved');
+        //         });
+        //     });
+        //     document.getElementById('divimagem').style.display = 'none';
+        // }
+    </script>
+
+    <div id="divimagenssorteio" class="divsimagens w-75"></div>
+
+
+    <div id="lightboximg" onclick="lightboxclose();">
+        <img src="./imagens/1sorteio/telapadrao.png" alt="" onclick="lightboxclose();">
+        <p onclick="lightboxclose();">X</p>
+    </div>
+
+</body>
+
+</html>

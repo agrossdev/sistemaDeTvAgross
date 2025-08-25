@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="trocartela.css">
+    <script src="trocartela.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@sweetalert2/theme-bulma/bulma.css">
+    <script src="/socket.io/socket.io.js"></script>
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trocar Tela</title>
+</head>
+
+<body>
+    <div id="divbackground">
+        <div id="divlogos">
+            <img src="../imagens/Logo - Grande Rodada do Realizador 02.png" alt="" id="imagemgrr">
+            <img src="../imagens/agross.png" alt="">
+            <img src="../imagens/tvagross.png" alt="">
+        </div>
+        <div id="divformulario">
+            <div style="display: flex; flex-direction: column; ">
+                <button type="button" id="telapadrao" class="btntelas" onclick="trocartela(telapadrao.id);">TELA
+                    PADRÃO</button>
+                <img src="../imagens/trocartela/telapadrao.png" alt="" onclick="trocartela(telapadrao.id);">
+            </div>
+            <div style="display: flex; flex-direction: column;">
+                <button type="button" id="primeiropremio" class="btntelas"
+                    onclick="trocartela(primeiropremio.id);">PRIMEIRO PRÊMIO</button>
+                <img src="../imagens/trocartela/primeiropremio.png" alt="" onclick="trocartela(primeiropremio.id);">
+            </div>
+            <div style="display: flex; flex-direction: column;">
+                <button type="button" id="segundopremio" class="btntelas"
+                    onclick="trocartela(segundopremio.id);">SEGUNDO PRÊMIO</button>
+                <img src="../imagens/trocartela/segundopremio.png" alt="" onclick="trocartela(segundopremio.id);">
+            </div>
+            <div style="display: flex; flex-direction: column;">
+                <button type="button" id="bolamaior" class="btntelas" onclick="trocartela(bolamaior.id);">BOLA MAIOR
+                </button>
+                <img src="../imagens/trocartela/bolamaior.png" alt="" onclick="trocartela(bolamaior.id);">
+            </div>
+
+
+        </div>
+        <div id="divimagenssorteio" class="divsimagens">
+
+        </div>
+        <div style="text-align: center;">
+            <input type="button" id="btnzerarfotos" value="RESETAR FOTOS" onclick="zerarfotos();">
+        </div>
+    </div>
+    <div id="status"></div>
+    <script>
+        $(function () {
+            const socket = io()
+            socket.nickname = ''
+
+            socket.emit('login', socket.nickname)
+
+            socket.on('status', function (msg) {
+                $('#status').html(msg)
+                
+            })
+            socket.on('statusparado', function (msg) {
+                $('#status').html('')
+                
+            })
+            
+
+        })
+    </script>
+</body>
+
+</html>

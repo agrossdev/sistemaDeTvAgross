@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="sorteio.css">
+    <script src="sorteio.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@sweetalert2/theme-dark/dark.css">
+    <script type="text/javascript" src="html2canvas.js"></script>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sorteio</title>
+</head>
+
+<body>
+    <div id="divbackground">
+        <div id="divlogos">
+            <img src="../imagens/Logo - Grande Rodada do Realizador 02.png" alt="" id="imagemgrr">
+            <img src="../imagens/agross.png" alt="">
+            <img src="../imagens/tvagross.png" alt="">
+        </div>
+    </div>
+
+    <div id="divinputbola">
+        <input type="number" id="inputbola" inputmode="numeric">
+        <input type="button" id="btnbola" value="ADICIONAR" onclick="verificanumeros();">
+    </div>
+    <div id="divenviarseis">
+        <input type="button" id="btnseis" value="MOSTRAR 6 NÚMEROS" onclick="screenshot(); numeroschamados();">
+    </div>
+    <div id="div6numeros">
+        <div>
+            <label for="" id="labelultimosnumeros">ÚLTIMOS NÚMEROS</label>
+        </div>
+        <div>
+            <input type="number" id="numero1" class="seisnumeros" onchange="verificatroca(this);" readonly>
+            <input type="number" id="numero2" class="seisnumeros" onchange="verificatroca(this);" readonly>
+            <input type="number" id="numero3" class="seisnumeros" onchange="verificatroca(this);" readonly>
+            <input type="number" id="numero4" class="seisnumeros" onchange="verificatroca(this);" readonly>
+            <input type="number" id="numero5" class="seisnumeros" onchange="verificatroca(this);" readonly>
+            <input type="number" id="numero6" class="seisnumeros" onchange="verificatroca(this);" readonly>
+        </div>
+
+    </div>
+    <div id="divimagem">
+        <div id="divnumero1" class="divnumeros">
+            <p>1</p>
+        </div>
+        <div id="divnumero2" class="divnumeros">
+            <p>2</p>
+        </div>
+        <div id="divnumero3" class="divnumeros">
+            <p>3</p>
+        </div>
+        <div id="divnumero4" class="divnumeros">
+            <p>4</p>
+        </div>
+        <div id="divnumero5" class="divnumeros">
+            <p>5</p>
+        </div>
+        <div id="divnumero6" class="divnumeros">
+            <p>6</p>
+        </div>
+    </div>
+    <div style="text-align: center;"> 
+        <input type="button" id="btnfinalizarsorteio" class="btnreset" value="FINALIZAR SORTEIO" onclick="finalizarsorteio();">
+        <input type="button" id="btnresetargrr" class="btnreset" value="RESETAR GRR" onclick="resetarsorteio();">
+    </div>
+    <script>
+        $("#inputbola").keypress(function (event) {
+            if (event.keyCode === 13) {
+                $("#btnbola").click();
+
+            }
+        });
+    </script>
+    <script>
+        window.onload = function () {
+            $("#inputbola").focus();
+            var numero = sessionStorage.getItem('numero');
+            if (numero == null) {
+                sessionStorage.setItem('numero', 0);
+            }
+            for (x = 1; x < 7; x++) {
+                if (sessionStorage.getItem('numero' + x) != null) {
+                    document.getElementById('numero' + x).value = sessionStorage.getItem('numero' + x);
+                    var divimagem2 = document.getElementById('divnumero' + x);
+                    divimagem2.children[0].innerHTML = sessionStorage.getItem('numero' + x) + '<br><br>' + listaNomes[sessionStorage.getItem('numero' + x)];
+                    document.getElementById('numero' + x).removeAttribute('readonly');
+                }
+            }
+
+            if (sessionStorage.getItem('numero6') != null) {
+                document.getElementById('divinputbola').style.display = "none";
+                document.getElementById('divenviarseis').style.display = "flex";
+            }
+            var numeroschamados = [];
+            var preenchenumeros = JSON.parse(sessionStorage.getItem('numeroschamados'));
+            if (preenchenumeros == null) {
+                sessionStorage.setItem('numeroschamados', JSON.stringify(numeroschamados));
+            }
+            console.log(preenchenumeros);
+        }
+        async function screenshot() {
+
+            var numero = sessionStorage.getItem('numero');
+            numero = parseInt(numero);
+            numero = numero + 1;
+            sessionStorage.setItem('numero', numero);
+            html2canvas(document.getElementById('divimagem'), { allowTaint: true, scale: 3, windowWidth: Window.innerWidth * 2, windowHeight: Window.innerHeight * 2 }).then(await function (canvas) {
+                //var preview = document.getElementById("previewImage");
+
+                var dataURL = canvas.toDataURL();
+                $.ajax({
+                    type: "POST",
+                    url: "salvarseis.php",
+                    data: {
+                        imgBase64: dataURL,
+                        numero: numero
+                    }
+                }).done(function (o) {
+
+                    console.log('saved');
+                    sessionStorage.removeItem('numero1');
+                    sessionStorage.removeItem('numero2');
+                    sessionStorage.removeItem('numero3');
+                    sessionStorage.removeItem('numero4');
+                    sessionStorage.removeItem('numero5');
+                    sessionStorage.removeItem('numero6');
+                    window.location.reload();
+                });
+            });
+
+
+
+        }
+    </script>
+</body>
+
+</html>

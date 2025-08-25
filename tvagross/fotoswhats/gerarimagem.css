@@ -1,0 +1,274 @@
+@charset "UTF-8";
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+body {
+    background-image: url(../imagens/background.png);
+    background-size: cover;
+    background-position: center;
+    min-height: 100vh;
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+
+}
+
+#divbackground {
+    width: 98vw;    
+    display: flex;
+    flex-direction: column;        
+}
+
+#divlogos {
+    background-color: white;
+    height: 10vh;
+    width: 90vw;
+    margin-top: 1rem;
+    padding: 1rem;
+    border-radius: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0px 5px 15px lightblue;
+    margin-left: auto;
+    margin-right: auto;
+    
+}
+
+#divlogos img {
+height: 100%;
+}
+#imagemgrr {
+    height: 19vh !important;
+}
+
+#divformulario {
+    background-color: white;
+    height: 8vh;
+    width: 90vw;
+    margin-top: 1rem;
+    padding: 1rem;
+    border-radius: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0px 5px 15px lightblue;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#divnome {
+    display: flex;
+    flex-direction: column;
+    width: 25%;
+    font-weight: 700;
+    margin-left: 15px;
+
+    
+}
+#divcidade {
+    display: flex;
+    flex-direction: column;
+    width: 25%;
+    font-weight: 700;
+    margin-left: 15px;
+    
+
+    
+}
+input, select {
+    
+    height: 1.3rem;
+    border-radius: 0.5rem;
+}
+
+#btnenviar, #btnmontar {
+    margin-left: 0.5rem;
+    font-weight: bolder;
+}
+#btnenviar:hover {
+    opacity: 0.8;
+    }
+
+
+
+
+
+#divimagem {
+    background-image: url(../imagens/fotoswhats/backfotos.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 1320px;
+    height: 745px;
+    margin-top: 1rem;
+    margin-left: 15px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    position: relative;
+    
+}
+
+
+#previewImage {
+    margin-top: 1rem;
+    margin-left: 15px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+
+
+button {
+    cursor: pointer;
+}
+
+
+
+.divsimagens {
+    background-color: white;
+    min-height: 8vh;
+    max-width: 95vw;
+    margin-top: 1rem;
+    padding: 1rem;
+    border-radius: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0px 5px 15px lightblue;
+    margin-left: auto;
+    margin-right: auto;
+    flex-wrap: wrap;
+}
+.divsimagens img {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 7px;
+    cursor: pointer;
+    border: solid 5px lightgray;
+}
+.divsimagens img:hover {
+    border: solid 5px lightblue;
+}
+.divsimagens div {
+    margin: 7px;
+}
+
+
+#lightboximg {
+    z-index: 999;
+    background-color: rgba(0, 0, 0, 0.5);
+    width: 99vw;
+    height: 99vh;
+    position: fixed;
+    top: 0;
+    display: flex;
+    visibility: hidden;
+}
+
+#lightboximg img{
+    height: 90vh;
+    margin: auto;
+}
+
+#lightboximg p{
+    position: relative;
+    top: 25px;
+    right: 25px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 1.5rem;
+    color: white;
+}
+
+.retrato {
+    background-color: blue;
+    width: 397px;
+    height: 703px;
+    
+    position: relative;
+    right: 0;
+    left: 0;
+    margin: auto;
+    top: 1rem;
+    bottom: 0;
+    border-radius: 1rem;
+    overflow: hidden;
+    display: flex;
+    
+    background-size: cover;
+    background-position: center;
+}
+
+.retrato2 {
+    background-color: blue;
+    width: 358px;
+    height: 634px;
+    position: relative;
+    right: 0;
+    left: 0;
+    margin: auto;
+    top: 1rem;
+    border-radius: 1rem;
+    overflow: hidden;
+    display: flex;
+    
+    background-size: cover;
+    background-position: center;
+}
+.paisagem {
+    background-color: blue;
+    width: 70%;
+    height: 70%;
+    position: relative;
+    right: 0;
+    left: 0;
+    margin: auto;
+    top: 5rem;
+    border-radius: 1rem;
+    overflow: hidden;
+    display: flex;
+    
+    background-size: cover;
+    background-position: center;
+}
+
+
+
+#divmodelofoto {
+    font-weight: 700;
+    margin-left: 15px;
+    display: flex;
+    flex-direction: column;
+
+}
+
+#divarquivo {
+    font-weight: 700;
+    margin-left: 15px;
+    display: flex;
+    flex-direction: column;
+
+}
+
+#divarquivo input {
+    border-radius: 0px !important;
+    height: auto !important;
+}
+
+#divnomefoto {
+    font-size: larger;
+    font-weight: bolder;
+    color: white;
+    position: absolute;
+    left: 3.7rem;
+    right: 0;
+    bottom: 1.5rem;
+    margin: auto;
+    z-index: 999;
+}
+#divimagenssorteio {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+}

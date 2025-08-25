@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="gerarimagem.css">
+    <script src="gerarimagem.js"></script>
+    <script src="ipapi.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@sweetalert2/theme-bulma/bulma.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+        crossorigin="anonymous"></script>
+    <script type="text/javascript" src="html2canvas.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerar Imagem TV</title>
+</head>
+
+<body>
+    <div id="divbackground">
+        <div id="divlogos">
+            <img src="imagens/Nota Fiscal Premiada.png" alt="" id="imagemgrr" onclick="recarregarimagens();">
+            <img src="imagens/agross.png" alt="" onclick="recarregarimagens();">
+            <img src="imagens/tvagross.png" alt="" onclick="recarregarimagens();">
+        </div>
+        <div style="display: flex; margin-left: auto; margin-right: auto; padding: 10px; margin-top: 10px;"
+            id="divsorteios">
+            <div>
+                <div style="display: flex; align-items: center; flex-direction: column;">
+                    <input type="button" id="btn1sorteio" class="btnsorteios" value="FINALIZAR"
+                        onclick="finalizarsorteio();">
+                </div>
+
+                <div style="display: flex; align-items: center;">
+                    <input type="radio" name="sorteio" id="1sorteio" value="1sorteio" onclick="liberapreenchimento();">
+                    <label for="1sorteio" style="margin-left: 4px;"><strong>1º Sorteio</strong></label>
+                </div>
+            </div>
+            <div style="display: flex; align-items: center; flex-direction: column;">
+                <div style="display: flex; align-items: center; flex-direction: column;">
+                    <input type="button" id="btn2sorteio" class="btnsorteios" style="margin-left: 15px;"
+                        value="FINALIZAR" onclick="finalizarsorteio();">
+                </div>
+                <div style="margin-left: 15px; display: flex; align-items: center;">
+                    <input type="radio" name="sorteio" id="2sorteio" value="2sorteio" onclick="liberapreenchimento();">
+                    <label for="2sorteio" style="margin-left: 4px;"><strong>2º Sorteio</strong></label>
+                </div>
+            </div>
+            <div style="display: flex; align-items: center; flex-direction: column;">
+                <div style="display: flex; align-items: center; flex-direction: column;">
+                    <input type="button" id="btn3sorteio" class="btnsorteios" style="margin-left: 15px;"
+                        value="FINALIZAR" onclick="finalizarsorteio();">
+                </div>
+                <div style="margin-left: 15px; display: flex; align-items: center;">
+                    <input type="radio" name="sorteio" id="3sorteio" value="3sorteio" onclick="liberapreenchimento();">
+                    <label for="3sorteio" style="margin-left: 4px;"><strong>3º Sorteio</strong></label>
+                </div>
+            </div>
+        </div>
+
+        <div id="divsempremio" style="display: none;">
+            <input type="button" value="SEM MILHAR" id="btnsemmilhar" class="sempremio" data-sempremio="milhar"
+                onclick="sempremios(this);">
+            <input type="button" value="SEM CENTENA" id="btnsemcentena" class="sempremio" data-sempremio="centena"
+                onclick="sempremios(this);">
+        </div>
+
+        <div id="divformulario" style="display: none;">
+            <div id="divpremio">
+                <label for="">Premio:</label>
+                <select name="premio" id="premio" onchange="mudarimagem(premio);">
+                    <option value="sempremio" selected>SEL. PRÊMIO</option>
+                    <option value="milhar">MILHAR</option>
+                    <option value="centena">CENTENA</option>
+                    <option value="premioextra">PRÊMIO EXTRA</option>
+                    <option value="bolamaiorm">BOLA MAIOR M.</option>
+                    <option value="bolamaiorc">BOLA MAIOR C.</option>
+                    <option value="roundup">ROUNDUP 3000</option>
+                </select>
+            </div>
+            <div id="divbolamaior" style="display: none;">
+                <label for="qtdbolamaior">QTD</label>
+                <select name="qtdbolamaior" id="qtdbolamaior" onchange="adicionarbolamaior(qtdbolamaior.value);">
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+
+                </select>
+            </div>
+            <div id="divnome">
+                <label for="inputnome">Ganhador:</label>
+                <input type="text" id="inputnome" class="inputnometodos" maxlength="-1">
+            </div>
+            <div id="divcidade">
+                <label for="inputcidade">Cidade:</label>
+                <input type="text" id="inputcidade" class="inputnometodos" maxlength="-1" size="20">
+            </div>
+
+            <div id="divunidade">
+                <label for="">Unidade:</label>
+                <select name="unidade" id="unidade">
+                    <option value="PAULINIA/SP">PAULINIA/SP</option>
+                    <option value="SEMUNIDADE" selected>SEL. UNIDADE</option>
+                    <option value="ANÁPOLIS/GO">ANÁPOLIS/GO</option>
+                    <option value="CARIACICA/ES">CARIACICA/ES</option>
+                    <option value="CARAZINHO/RS">CARAZINHO/RS</option>
+                    <option value="PETROLINA/PE">PETROLINA/PE</option>
+                    <option value="RECIFE/PE">RECIFE/PE</option>
+                    <option value="SETE LAGOAS/MG">SETE LAGOAS/MG</option>
+                    <option value="LINS/SP">LINS/SP</option>
+                    <option value="POUSO ALEGRE/MG">POUSO ALEGRE/MG</option>
+                </select>
+            </div>
+
+
+            <button type="button" id="btnenviar"
+                onclick="mudarnome(inputnome, unidade, premio, qtdbolamaior.value, inputcidade);">GERAR
+                IMAGEM</button>
+
+        </div>
+        <div id="divformulariobm" style="display: none;">
+            <div class="divsbm" id="divbm2" style="display: none;">
+                <div id="divnome2" style="display: flex; flex-direction: column;">
+                    <label for="inputnome2">Ganhador 2:</label>
+                    <input type="text" id="inputnome2" class="inputnometodos" maxlength="50">
+                </div>
+                <div id="divcidade2" style="display: flex; flex-direction: column; margin-left: 15px;">
+                    <label for="inputcidade2">Cidade 2:</label>
+                    <input type="text" id="inputcidade2" class="inputnometodos" maxlength="35"
+                        style=" width: 150px !important; ">
+                </div>
+                <div id="divunidade2" style="display: flex; flex-direction: column; margin-left: 15px;">
+                    <label for="">Unidade 2:</label>
+                    <select name="unidade2" id="unidade2">
+                        <option value="PAULINIA/SP">PAULINIA/SP</option>
+                        <option value="SEMUNIDADE" selected>SEL. UNIDADE</option>
+                        <option value="ANÁPOLIS/GO">ANÁPOLIS/GO</option>
+                        <option value="CARIACICA/ES">CARIACICA/ES</option>
+                        <option value="CARAZINHO/RS">CARAZINHO/RS</option>
+                        <option value="PETROLINA/PE">PETROLINA/PE</option>
+                        <option value="RECIFE/PE">RECIFE/PE</option>
+                        <option value="SETE LAGOAS/MG">SETE LAGOAS/MG</option>
+                        <option value="LINS/SP">LINS/SP</option>
+                        <option value="POUSO ALEGRE/MG">POUSO ALEGRE/MG</option>
+                    </select>
+                </div>
+            </div>
+            <div class="divsbm" id="divbm3" style="display: none;">
+                <div id="divnome3" style="display: flex; flex-direction: column;">
+                    <label for="inputnome3">Ganhador 3:</label>
+                    <input type="text" id="inputnome3" class="inputnometodos" maxlength="50">
+                </div>
+                <div id="divcidade3" style="display: flex; flex-direction: column; margin-left: 15px;">
+                    <label for="inputcidade3">Cidade 3:</label>
+                    <input type="text" id="inputcidade3" class="inputnometodos" maxlength="35"
+                        style=" width: 150px !important; ">
+                </div>
+                <div id="divunidade3" style="display: flex; flex-direction: column; margin-left: 15px;">
+                    <label for="">Unidade 3:</label>
+                    <select name="unidade3" id="unidade3">
+                        <option value="PAULINIA/SP">PAULINIA/SP</option>
+                        <option value="SEMUNIDADE" selected>SEL. UNIDADE</option>
+                        <option value="ANÁPOLIS/GO">ANÁPOLIS/GO</option>
+                        <option value="CARIACICA/ES">CARIACICA/ES</option>
+                        <option value="CARAZINHO/RS">CARAZINHO/RS</option>
+                        <option value="PETROLINA/PE">PETROLINA/PE</option>
+                        <option value="RECIFE/PE">RECIFE/PE</option>
+                        <option value="SETE LAGOAS/MG">SETE LAGOAS/MG</option>
+                        <option value="LINS/SP">LINS/SP</option>
+                        <option value="POUSO ALEGRE/MG">POUSO ALEGRE/MG</option>
+                    </select>
+                </div>
+            </div>
+            <div class="divsbm" id="divbm4" style="display: none;">
+                <div id="divnome4" style="display: flex; flex-direction: column;">
+                    <label for="inputnome4">Ganhador 4:</label>
+                    <input type="text" id="inputnome4" class="inputnometodos" maxlength="50">
+                </div>
+                <div id="divcidade4" style="display: flex; flex-direction: column; margin-left: 15px;">
+                    <label for="inputcidade4">Cidade 4:</label>
+                    <input type="text" id="inputcidade4" class="inputnometodos" maxlength="35"
+                        style=" width: 150px !important; ">
+                </div>
+                <div id="divunidade4" style="display: flex; flex-direction: column; margin-left: 15px;">
+                    <label for="">Unidade 4:</label>
+                    <select name="unidade4" id="unidade4">
+                        <option value="PAULINIA/SP">PAULINIA/SP</option>
+                        <option value="SEMUNIDADE" selected>SEL. UNIDADE</option>
+                        <option value="ANÁPOLIS/GO">ANÁPOLIS/GO</option>
+                        <option value="CARIACICA/ES">CARIACICA/ES</option>
+                        <option value="CARAZINHO/RS">CARAZINHO/RS</option>
+                        <option value="PETROLINA/PE">PETROLINA/PE</option>
+                        <option value="RECIFE/PE">RECIFE/PE</option>
+                        <option value="SETE LAGOAS/MG">SETE LAGOAS/MG</option>
+                        <option value="LINS/SP">LINS/SP</option>
+                        <option value="POUSO ALEGRE/MG">POUSO ALEGRE/MG</option>
+                    </select>
+                </div>
+            </div>
+            <div class="divsbm" id="divbm5" style="display: none;">
+                <div id="divnome5" style="display: flex; flex-direction: column;">
+                    <label for="inputnome5">Ganhador 5:</label>
+                    <input type="text" id="inputnome5" class="inputnometodos" maxlength="50">
+                </div>
+                <div id="divcidade5" style="display: flex; flex-direction: column; margin-left: 15px;">
+                    <label for="inputcidade5">Cidade 5:</label>
+                    <input type="text" id="inputcidade5" class="inputnometodos" maxlength="35"
+                        style=" width: 150px !important; ">
+                </div>
+                <div id="divunidade5" style="display: flex; flex-direction: column; margin-left: 15px;">
+                    <label for="">Unidade 5:</label>
+                    <select name="unidade5" id="unidade5">
+                        <option value="PAULINIA/SP">PAULINIA/SP</option>
+                        <option value="SEMUNIDADE" selected>SEL. UNIDADE</option>
+                        <option value="ANÁPOLIS/GO">ANÁPOLIS/GO</option>
+                        <option value="CARIACICA/ES">CARIACICA/ES</option>
+                        <option value="CARAZINHO/RS">CARAZINHO/RS</option>
+                        <option value="PETROLINA/PE">PETROLINA/PE</option>
+                        <option value="RECIFE/PE">RECIFE/PE</option>
+                        <option value="SETE LAGOAS/MG">SETE LAGOAS/MG</option>
+                        <option value="LINS/SP">LINS/SP</option>
+                        <option value="POUSO ALEGRE/MG">POUSO ALEGRE/MG</option>
+                    </select>
+                </div>
+            </div>
+            <div class="divsbm" id="divbm6" style="display: none;">
+                <div id="divnome6" style="display: flex; flex-direction: column;">
+                    <label for="inputnome6">Ganhador 6:</label>
+                    <input type="text" id="inputnome6" class="inputnometodos" maxlength="50">
+                </div>
+                <div id="divcidade6" style="display: flex; flex-direction: column; margin-left: 15px;">
+                    <label for="inputcidade6">Cidade 6:</label>
+                    <input type="text" id="inputcidade6" class="inputnometodos" maxlength="35"
+                        style=" width: 150px !important; ">
+                </div>
+                <div id="divunidade6" style="display: flex; flex-direction: column; margin-left: 15px;">
+                    <label for="">Unidade 6:</label>
+                    <select name="unidade6" id="unidade6">
+                        <option value="PAULINIA/SP">PAULINIA/SP</option>
+                        <option value="SEMUNIDADE" selected>SEL. UNIDADE</option>
+                        <option value="ANÁPOLIS/GO">ANÁPOLIS/GO</option>
+                        <option value="CARIACICA/ES">CARIACICA/ES</option>
+                        <option value="CARAZINHO/RS">CARAZINHO/RS</option>
+                        <option value="PETROLINA/PE">PETROLINA/PE</option>
+                        <option value="RECIFE/PE">RECIFE/PE</option>
+                        <option value="SETE LAGOAS/MG">SETE LAGOAS/MG</option>
+                        <option value="LINS/SP">LINS/SP</option>
+                        <option value="POUSO ALEGRE/MG">POUSO ALEGRE/MG</option>
+                    </select>
+                </div>
+            </div>
+
+
+
+
+        </div>
+        <div>
+
+        </div>
+
+        <div id="divimagem" style="display: none;">
+            <div id="divganhador">
+                <p id="nomeganhador">NOME</p>
+                <p id="nomeunidade">UNIDADE</p>
+
+            </div>
+            <div id="divsbatidas">
+                <div id="1batida" style="display: none;">
+                    <fieldset>
+                        <legend>1ª Batida</legend>
+                        <div id="div1batida" class="divbatidanumeros">
+                            <p id="bmnome1" class="bmnomeclass">NOME</p>
+                            <p class="bmunidade" id="bmunidade1">CIDADE: <br> UNIDADE: </p>
+                        </div>
+                    </fieldset>
+                </div>
+                <div id="2batida" style="display: none;">
+                    <fieldset>
+                        <legend>2ª Batida</legend>
+                        <div id="div2batida" class="divbatidanumeros">
+                            <p id="bmnome2" class="bmnomeclass">NOME</p>
+                            <p class="bmunidade" id="bmunidade2">CIDADE: <br> UNIDADE: </p>
+                        </div>
+                    </fieldset>
+                </div>
+                <div id="3batida" style="display: none;">
+                    <fieldset>
+                        <legend>3ª Batida</legend>
+                        <div id="div3batida" class="divbatidanumeros">
+                            <p id="bmnome3" class="bmnomeclass">NOME</p>
+                            <p class="bmunidade" id="bmunidade3">CIDADE: <br> UNIDADE: </p>
+                        </div>
+                    </fieldset>
+                </div>
+                <div id="4batida" style="display: none;">
+                    <fieldset>
+                        <legend>4ª Batida</legend>
+                        <div id="div4batida" class="divbatidanumeros">
+                            <p id="bmnome4" class="bmnomeclass">NOME</p>
+                            <p class="bmunidade" id="bmunidade4">CIDADE: <br> UNIDADE: </p>
+                        </div>
+                    </fieldset>
+                </div>
+                <div id="5batida" style="display: none;">
+                    <fieldset>
+                        <legend>5ª Batida</legend>
+                        <div id="div5batida" class="divbatidanumeros">
+                            <p id="bmnome5" class="bmnomeclass">NOME</p>
+                            <p class="bmunidade" id="bmunidade5">CIDADE: <br> UNIDADE: </p>
+                        </div>
+                    </fieldset>
+                </div>
+                <div id="6batida" style="display: none;">
+                    <fieldset>
+                        <legend>6ª Batida</legend>
+                        <div id="div6batida" class="divbatidanumeros">
+                            <p id="bmnome6" class="bmnomeclass">NOME</p>
+                            <p class="bmunidade" id="bmunidade6">CIDADE: <br> UNIDADE: </p>
+                        </div>
+                    </fieldset>
+                </div>
+
+
+            </div>
+
+
+
+        </div>
+        <div id="previewImage"></div>
+
+    </div>
+
+    <input type="button" value="EDITAR SORTEIO" id="btnrefazer" onclick="refazersorteio();">
+    <script>
+        function screenshot(premio, pasta) {
+            var premio = premio;
+
+
+            html2canvas(document.getElementById('divimagem'), { allowTaint: true, scale: 3, windowWidth: Window.innerWidth * 2, windowHeight: Window.innerHeight * 2 }).then(function (canvas) {
+                //var preview = document.getElementById("previewImage");
+                document.getElementById("previewImage").appendChild(canvas);
+                var dataURL = canvas.toDataURL();
+                $.ajax({
+                    type: "POST",
+                    url: `http://10.19.3.45/tvagross/save-capture.php`,
+                    data: {
+                        imgBase64: dataURL,
+                        premio: premio,
+                        pasta: pasta
+                    }
+                }).done(function (o) {
+
+                    console.log('saved');
+                });
+            });
+            document.getElementById('divimagem').style.display = 'none';
+        }
+
+
+    </script>
+    
+        <div id="divimagens1sorteio" class="divsimagens w-75"></div>
+        <div id="divimagens2sorteio" class="divsimagens w-75"></div>
+        <div id="divimagens3sorteio" class="divsimagens w-75"></div>
+        <div id="divimagensroundup" class="divsimagens w-75"></div>
+
+        <div id="lightboximg" onclick="lightboxclose();">
+            <img src="./imagens/1sorteio/telapadrao.png" alt="" onclick="lightboxclose();">
+            <p onclick="lightboxclose();">X</p>
+        </div>
+    
+</body>
+
+</html>

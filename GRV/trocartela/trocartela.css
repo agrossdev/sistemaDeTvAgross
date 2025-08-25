@@ -1,0 +1,137 @@
+@charset "UTF-8";
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+body {
+    background-image: url(../imagens/background.jpg);
+    background-size: cover;
+    background-position: center;
+    min-height: 100vh;
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+
+}
+
+#divbackground {
+    width: 100vw;
+    
+    
+    display: flex;
+    flex-direction: column;
+    
+    
+}
+
+#divlogos {
+    background-color: white;
+    height: 10vh;
+    width: 90vw;
+    margin-top: 1rem;
+    padding: 1rem;
+    border-radius: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0px 5px 15px lightblue;
+    margin-left: auto;
+    margin-right: auto;
+    
+}
+#divlogos img {
+height: 100%;
+}
+#imagemgrr {
+    height: 19vh !important;
+}
+
+#divformulario {
+    background-color: white;
+    min-height: 8vh;
+    margin-top: 1rem;
+    padding: 1rem;
+    border-radius: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0px 5px 15px lightblue;
+    margin-left: auto;
+    margin-right: auto;
+}
+#divformulario img {
+    width: 200px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 7px;
+    cursor: pointer;
+    border: solid 5px lightgray;
+}
+
+#divformulario img:hover {
+    border: solid 5px lightblue;
+}
+
+#divformulario div {
+    margin: 7px;
+}
+
+.btntelas {
+    font-weight: 700;
+    cursor: pointer;
+    background-color: green;
+    border: 0;
+    padding: 5px;
+    height: 9vh;
+    border-radius: 0.2rem;
+    color: white;
+    padding: 20px;
+}
+.btntelas:hover {
+    opacity: 0.8;
+    }
+
+    .divsimagens {
+        background-color: white;
+        min-height: 8vh;
+        max-width: 95vw;
+        margin-top: 1rem;
+        padding: 1rem;
+        border-radius: 1rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 0px 5px 15px lightblue;
+        margin-left: auto;
+        margin-right: auto;
+        flex-wrap: wrap;
+    }
+    .divsimagens img {
+        width: 300px;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 7px;
+        cursor: pointer;
+        border: solid 5px lightgray;
+    }
+    .divsimagens img:hover {
+        border: solid 5px lightblue;
+    }
+    .divsimagens div {
+        margin: 7px;
+    }
+
+    #btnzerarfotos {
+        font-weight: 700;
+        cursor: pointer;
+        background-color: green;
+        border: 0;
+        padding: 5px;
+        margin-top: 50px;
+        border-radius: 0.2rem;
+        color: white;
+        padding: 10px;
+        
+    }
+
+    .labeldigitando {
+        color: #BC0D0C;
+        font-weight: bolder;
+    }

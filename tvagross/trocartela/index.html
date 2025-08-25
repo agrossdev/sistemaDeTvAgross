@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="-1" />
+    <link rel="stylesheet" href="trocartela.css">
+    <script src="trocartela.js"></script>
+    <script src="../ipapi.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@sweetalert2/theme-bulma/bulma.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+        crossorigin="anonymous"></script>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trocar Tela</title>
+</head>
+
+<body>
+    <div id="divbackground">
+        <div id="divlogos">
+            <img src="../imagens/Nota Fiscal Premiada.png" alt="" id="imagemgrr" onclick="recarregarimagens();">
+            <img src="../imagens/agross.png" alt="" onclick="recarregarimagens();">
+            <img src="../imagens/tvagross.png" alt="" onclick="recarregarimagens();">
+        </div>
+        <div id="divformulario" class="divsimagens">
+            <div style="display: flex; flex-direction: column; ">
+                <button type="button" id="telapadrao" class="btntelas"
+                    onclick="trocartelasorteios(trocartelatelapadrao); corbtn(telapadrao.id);">TELA PADRÃO</button>
+                <img src="../imagens/trocartela/telapadrao.png" alt="" data-sorteio="trocartela" data-img="telapadrao"
+                    id="trocartelatelapadrao" style="display: none;">
+            </div>
+            <div style="display: flex; flex-direction: column;">
+                <button type="button" id="milhar" class="btntelas">MILHAR</button>
+                <img src="../imagens/trocartela/milhar.png" alt="" data-sorteio="trocartela" data-img="milhar"
+                    id="trocartelamilhar" onclick="trocartelasorteios(this);" style="display: none;">
+
+            </div>
+            <div style="display: flex; flex-direction: column;">
+                <button type="button" id="centena" class="btntelas">CENTENA</button>
+                <img src="../imagens/trocartela/centena.png" alt="" data-sorteio="trocartela" data-img="centena"
+                    id="trocartelacentena" onclick="trocartelasorteios(this);" style="display: none;">
+            </div>
+            <div style="display: flex; flex-direction: column;">
+                <button type="button" id="premioextra" class="btntelas">PRÊMIO EXTRA</button>
+                <img src="../imagens/trocartela/premioextra.png" alt="" data-sorteio="trocartela" data-img="premioextra"
+                    id="trocartelapremioextra" onclick="trocartelasorteios(this);" style="display: none;">
+            </div>
+            <div style="display: flex; flex-direction: column;">
+                <button type="button" id="bolamaiorm" class="btntelas">BOLA MAIOR M</button>
+                <img src="../imagens/trocartela/bolamaiorm.png" alt="" data-sorteio="trocartela" data-img="bolamaiorm"
+                    id="trocartelabolamaiorm" onclick="trocartelasorteios(this);" style="display: none;">
+            </div>
+            <div style="display: flex; flex-direction: column;">
+                <button type="button" id="bolamaiorc" class="btntelas">BOLA MAIOR C</button>
+                <img src="../imagens/trocartela/bolamaiorc.png" alt="" data-sorteio="trocartela" data-img="bolamaiorc"
+                    id="trocartelabolamaiorc" onclick="trocartelasorteios(this);" style="display: none;">
+            </div>
+            <div style="display: flex; flex-direction: column;">
+                <button type="button" id="sorteio" class="btntelas">SORTEIO</button>
+                <img src="../imagens/trocartela/sorteio.png" alt="" data-sorteio="trocartela" data-img="sorteio"
+                    id="trocartelasorteio" onclick="trocartelasorteios(this);" style="display: none;">
+            </div>
+        </div>
+
+        <div id="divimagenssorteio" class="divsimagens">
+            <div style="display: flex; flex-direction: column; ">
+                <img src="../imagens/1sorteio/telapadrao.png" alt="" style="cursor: unset !important;"
+                    data-sorteio="1sorteio" data-img="telapadrao" id="1sorteiotelapadrao">
+            </div>
+            <div style="display: flex; flex-direction: column;">
+                <img src="../imagens/1sorteio/milhar.png" alt="" data-sorteio="1sorteio" data-img="milhar"
+                    id="1sorteiomilhar" onclick="trocartelasorteios(this);">
+                <label for="" class="digitandostatus 1sorteiomilhar">Digitando...</label>
+            </div>
+            <div style="display: flex; flex-direction: column;">
+                <img src="../imagens/1sorteio/centena.png" alt="" data-sorteio="1sorteio" data-img="centena"
+                    id="1sorteiocentena" onclick="trocartelasorteios(this);">
+                <label for="" class="digitandostatus 1sorteiocentena">Digitando...</label>
+            </div>
+            <div style="display: flex; flex-direction: column;">
+                <img src="../imagens/1sorteio/premioextra.png" alt="" data-sorteio="1sorteio" data-img="premioextra"
+                    id="1sorteiopremioextra" onclick="trocartelasorteios(this);">
+                <label for="" class="digitandostatus 1sorteiopremioextra">Digitando...</label>
+            </div>
+            <div style="display: flex; flex-direction: column;">
+                <img src="../imagens/1sorteio/bolamaiorm.png" alt="" data-sorteio="1sorteio" data-img="bolamaiorm"
+                    id="1sorteiobolamaiorm" onclick="trocartelasorteios(this);">
+                <label for="" class="digitandostatus 1sorteiobolamaiorm">Digitando...</label>
+            </div>
+            <div style="display: flex; flex-direction: column;">
+                <img src="../imagens/1sorteio/bolamaiorc.png" alt="" data-sorteio="1sorteio" data-img="bolamaiorc"
+                    id="1sorteiobolamaiorc" onclick="trocartelasorteios(this);">
+                <label for="" class="digitandostatus 1sorteiobolamaiorc">Digitando...</label>
+            </div>
+            <div style="display: flex; flex-direction: column;">
+                <img src="../imagens/1sorteio/sorteio.png" alt="" data-sorteio="1sorteio" data-img="sorteio"
+                    id="1sorteiosorteio" onclick="trocartelasorteios(this);">
+            </div>
+        </div>
+
+        <div id="divimagenssorteio2" class="divsimagens">
+            <div style="display: flex; flex-direction: column; ">
+                <img src="../imagens/2sorteio/telapadrao.png" alt="" data-sorteio="2sorteio"
+                    style="cursor: unset !important;" data-img="telapadrao" id="2sorteiotelapadrao">
+            </div>
+            <div style="display: flex; flex-direction: column;">
+                <img src="../imagens/2sorteio/milhar.png" alt="" data-sorteio="2sorteio" data-img="milhar"
+                    id="2sorteiomilhar" onclick="trocartelasorteios(this);">
+                <label for="" class="digitandostatus 2sorteiomilhar">Digitando...</label>
+            </div>
+            <div style="display: flex; flex-direction: column;">
+                <img src="../imagens/2sorteio/centena.png" alt="" data-sorteio="2sorteio" data-img="centena"
+                    id="2sorteiocentena" onclick="trocartelasorteios(this);">
+                <label for="" class="digitandostatus 2sorteiocentena">Digitando...</label>
+            </div>
+            <div style="display: flex; flex-direction: column;">
+                <img src="../imagens/2sorteio/premioextra.png" alt="" data-sorteio="2sorteio" data-img="premioextra"
+                    id="2sorteiopremioextra" onclick="trocartelasorteios(this);">
+                <label for="" class="digitandostatus 2sorteiopremioextra">Digitando...</label>
+            </div>
+            <div style="display: flex; flex-direction: column;">
+                <img src="../imagens/2sorteio/bolamaiorm.png" alt="" data-sorteio="2sorteio" data-img="bolamaiorm"
+                    id="2sorteiobolamaiorm" onclick="trocartelasorteios(this);">
+                <label for="" class="digitandostatus 2sorteiobolamaiorm">Digitando...</label>
+            </div>
+            <div style="display: flex; flex-direction: column;">
+                <img src="../imagens/2sorteio/bolamaiorc.png" alt="" data-sorteio="2sorteio" data-img="bolamaiorc"
+                    id="2sorteiobolamaiorc" onclick="trocartelasorteios(this);">
+                <label for="" class="digitandostatus 2sorteiobolamaiorc">Digitando...</label>
+            </div>
+            <div style="display: flex; flex-direction: column;">
+                <img src="../imagens/2sorteio/sorteio.png" alt="" data-sorteio="2sorteio" data-img="sorteio"
+                    id="2sorteiosorteio" onclick="trocartelasorteios(this);">
+            </div>
+        </div>
+
+        <div id="divimagenssorteio2" class="divsimagens">
+            <div style="display: flex; flex-direction: column; ">
+                <img src="../imagens/3sorteio/telapadrao.png" alt="" data-sorteio="3sorteio"
+                    style="cursor: unset !important;" data-img="telapadrao" id="3sorteiotelapadrao">
+            </div>
+            <div style="display: flex; flex-direction: column;">
+                <img src="../imagens/3sorteio/milhar.png" alt="" data-sorteio="3sorteio" data-img="milhar"
+                    id="3sorteiomilhar" onclick="trocartelasorteios(this);">
+                <label for="" class="digitandostatus 3sorteiomilhar">Digitando...</label>
+            </div>
+            <div style="display: flex; flex-direction: column;">
+                <img src="../imagens/3sorteio/centena.png" alt="" data-sorteio="3sorteio" data-img="centena"
+                    id="3sorteiocentena" onclick="trocartelasorteios(this);">
+                <label for="" class="digitandostatus 3sorteiocentena">Digitando...</label>
+            </div>
+            <div style="display: flex; flex-direction: column;">
+                <img src="../imagens/3sorteio/premioextra.png" alt="" data-sorteio="3sorteio" data-img="premioextra"
+                    id="3sorteiopremioextra" onclick="trocartelasorteios(this);">
+                <label for="" class="digitandostatus 3sorteiopremioextra">Digitando...</label>
+            </div>
+            <div style="display: flex; flex-direction: column;">
+                <img src="../imagens/3sorteio/bolamaiorm.png" alt="" data-sorteio="3sorteio" data-img="bolamaiorm"
+                    id="3sorteiobolamaiorm" onclick="trocartelasorteios(this);">
+                <label for="" class="digitandostatus 3sorteiobolamaiorm">Digitando...</label>
+            </div>
+            <div style="display: flex; flex-direction: column;">
+                <img src="../imagens/3sorteio/bolamaiorc.png" alt="" data-sorteio="3sorteio" data-img="bolamaiorc"
+                    id="3sorteiobolamaiorc" onclick="trocartelasorteios(this);">
+                <label for="" class="digitandostatus 3sorteiobolamaiorc">Digitando...</label>
+            </div>
+            <div style="display: flex; flex-direction: column;">
+                <img src="../imagens/3sorteio/sorteio.png" alt="" data-sorteio="3sorteio" data-img="sorteio"
+                    id="3sorteiosorteio" onclick="trocartelasorteios(this);">
+            </div>
+        </div>
+        <!-- <div id="divimagensroundup" class="divsimagens">
+            <div style="display: flex; flex-direction: column; ">
+                <img src="../imagens/roundup/telapadrao.png" alt="" data-sorteio="roundup"
+                    style="cursor: unset !important;" data-img="telapadrao" id="3sorteiotelapadrao">
+            </div>
+            <div style="display: flex; flex-direction: column;">
+                <img src="../imagens/roundup/roundup.png" alt="" data-sorteio="roundup" data-img="roundup" id="roundup"
+                    onclick="trocartelasorteios(this);">
+                <label for="" class="digitandostatus roundup">Digitando...</label>
+            </div>
+        </div> -->
+        <div id="divimagenswpp" class="divsimagens">
+
+        </div>
+        <div style="display: none;">
+            <fieldset>
+                <legend>Imagem na Tela</legend>
+                <img src="../imagens/telatv/01.png" alt="">
+            </fieldset>
+
+        </div>
+    </div>
+
+    <button type="button" class="btn btn-danger bg-gradient" id="btnreset" onclick="zerarfotos();">RESETAR
+        FOTOS</button>
+    <script>
+        $(function () {
+
+            $.get('http://10.19.3.45:8000/moldura', {
+
+            }, function (data) {
+                document.getElementById(data).style.border = "solid 5px green";
+
+            });
+            $.get('http://10.19.3.45:8000/tela', {
+
+            }, function (data) {
+                corbtn(data);
+
+            });
+
+        })
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="gerarimagem.css">
+    <script src="gerarimagem.js"></script>
+    <script src="ipapi.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"
+        integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="html2canvas.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="imagens/Logo - Grande Rodada Virtual.png">
+    <title>Gerar Imagem GRR</title>
+</head>
+
+<body>
+    <div id="divbackground">
+        <div id="divlogos">
+            <img src="imagens/Logo - Grande Rodada Virtual.png" alt="" id="imagemgrr" onclick="recarregarimagens();">
+            <img src="imagens/agross.png" alt="" onclick="recarregarimagens();">
+            <img src="imagens/tvagross.png" alt="" onclick="recarregarimagens();">
+        </div>
+        <div id="divformulario">
+            <div id="divpremio">
+                <label for="">Premio:</label>
+                <select name="premio" id="premio" onchange="mudarimagem(premio);" class="digitandostatus2">
+                    <option value="primeiropremio">PRIMEIRO</option>
+                    <option value="bolamaior">BOLA MAIOR</option>
+                </select>
+            </div>
+            <div id="divbolamaior" style="display: none;">
+                <label for="qtdbolamaior">QTD</label>
+                <select name="qtdbolamaior" id="qtdbolamaior" onchange="adicionarbolamaior(qtdbolamaior.value);">
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+
+                </select>
+            </div>
+            <div id="divnome">
+                <label for="inputnome">Ganhador:</label>
+                <input type="text" id="inputnome" class="inputnometodos" maxlength="-1">
+            </div>
+            <div id="divcidade">
+                <label for="inputcidade">Cidade:</label>
+                <input type="text" id="inputcidade" class="digitandostatus" maxlength="-1" size="20">
+            </div>
+            <div id="divunidade">
+                <label for="">Unidade:</label>
+                <select name="unidade" id="unidade" class="digitandostatus2">
+                    <option value="CAMPINAS/SP">CAMPINAS/SP</option>
+                    <option value="ANÁPOLIS/GO">ANÁPOLIS/GO</option>
+                    <option value="CARIACICA/ES">CARIACICA/ES</option>
+                    <option value="CARAZINHO/RS">CARAZINHO/RS</option>
+                    <option value="PETROLINA/PE">PETROLINA/PE</option>
+                    <option value="RECIFE/PE">RECIFE/PE</option>
+                    <option value="SETE LAGOAS/MG">SETE LAGOAS/MG</option>
+                    <option value="LINS/SP">LINS/SP</option>
+                    <option value="POUSO ALEGRE/MG">POUSO ALEGRE/MG</option>
+                </select>
+            </div>
+            
+            <button type="button" id="btnenviar"
+                onclick="mudarnome(inputnome, unidade, premio, qtdbolamaior.value, inputcidade);">GERAR IMAGEM</button>
+
+        </div>
+        <div id="divformulariobm" style="display: none;">
+            <div class="divsbm" id="divbm2" style="display: none;">
+                <div id="divnome2" style="display: flex; flex-direction: column;">
+                    <label for="inputnome2">Ganhador 2:</label>
+                    <input type="text" id="inputnome2" class="inputnometodos" maxlength="50">
+                </div>
+                <div id="divcidade2" style="display: flex; flex-direction: column; margin-left: 15px;">
+                    <label for="inputcidade2">Cidade 2:</label>
+                    <input type="text" id="inputcidade2" class="digitandostatus" maxlength="35" style=" width: 150px !important; ">
+                </div>
+
+                <div id="divunidade2" style="display: flex; flex-direction: column; margin-left: 15px;">
+                    <label for="">Unidade 2:</label>
+                    <select name="unidade2" id="unidade2" class="digitandostatus2">
+                        <option value="CAMPINAS/SP">CAMPINAS/SP</option>
+                        <option value="ANÁPOLIS/GO">ANÁPOLIS/GO</option>
+                        <option value="CARIACICA/ES">CARIACICA/ES</option>
+                        <option value="CARAZINHO/RS">CARAZINHO/RS</option>
+                        <option value="PETROLINA/PE">PETROLINA/PE</option>
+                        <option value="RECIFE/PE">RECIFE/PE</option>
+                        <option value="SETE LAGOAS/MG">SETE LAGOAS/MG</option>
+                        <option value="LINS/SP">LINS/SP</option>
+                        <option value="POUSO ALEGRE/MG">POUSO ALEGRE/MG</option>
+                    </select>
+                </div>
+            </div>
+            <div class="divsbm" id="divbm3" style="display: none;">
+                <div id="divnome3" style="display: flex; flex-direction: column;">
+                    <label for="inputnome3">Ganhador 3:</label>
+                    <input type="text" id="inputnome3" class="inputnometodos" maxlength="50">
+                </div>
+                <div id="divcidade3" style="display: flex; flex-direction: column; margin-left: 15px;">
+                    <label for="inputcidade3">Cidade 3:</label>
+                    <input type="text" id="inputcidade3" class="digitandostatus" maxlength="35" style=" width: 150px !important; ">
+                </div>
+                <div id="divunidade3" style="display: flex; flex-direction: column; margin-left: 15px;">
+                    <label for="">Unidade 3:</label>
+                    <select name="unidade3" id="unidade3" class="digitandostatus2">
+                        <option value="CAMPINAS/SP">CAMPINAS/SP</option>
+                        <option value="ANÁPOLIS/GO">ANÁPOLIS/GO</option>
+                        <option value="CARIACICA/ES">CARIACICA/ES</option>
+                        <option value="CARAZINHO/RS">CARAZINHO/RS</option>
+                        <option value="PETROLINA/PE">PETROLINA/PE</option>
+                        <option value="RECIFE/PE">RECIFE/PE</option>
+                        <option value="SETE LAGOAS/MG">SETE LAGOAS/MG</option>
+                        <option value="LINS/SP">LINS/SP</option>
+                        <option value="POUSO ALEGRE/MG">POUSO ALEGRE/MG</option>
+                    </select>
+                </div>
+            </div>
+            <div class="divsbm" id="divbm4" style="display: none;">
+                <div id="divnome4" style="display: flex; flex-direction: column;">
+                    <label for="inputnome4">Ganhador 4:</label>
+                    <input type="text" id="inputnome4" class="inputnometodos" maxlength="50">
+                </div>
+                <div id="divcidade4" style="display: flex; flex-direction: column; margin-left: 15px;">
+                    <label for="inputcidade4">Cidade 4:</label>
+                    <input type="text" id="inputcidade4" class="digitandostatus" maxlength="35" style=" width: 150px !important; ">
+                </div>
+                <div id="divunidade4" style="display: flex; flex-direction: column; margin-left: 15px;">
+                    <label for="">Unidade 4:</label>
+                    <select name="unidade4" id="unidade4" class="digitandostatus2">
+                        <option value="CAMPINAS/SP">CAMPINAS/SP</option>
+                        <option value="ANÁPOLIS/GO">ANÁPOLIS/GO</option>
+                        <option value="CARIACICA/ES">CARIACICA/ES</option>
+                        <option value="CARAZINHO/RS">CARAZINHO/RS</option>
+                        <option value="PETROLINA/PE">PETROLINA/PE</option>
+                        <option value="RECIFE/PE">RECIFE/PE</option>
+                        <option value="SETE LAGOAS/MG">SETE LAGOAS/MG</option>
+                        <option value="LINS/SP">LINS/SP</option>
+                        <option value="POUSO ALEGRE/MG">POUSO ALEGRE/MG</option>
+                    </select>
+                </div>
+            </div>
+            <div class="divsbm" id="divbm5" style="display: none;">
+                <div id="divnome5" style="display: flex; flex-direction: column;">
+                    <label for="inputnome5">Ganhador 5:</label>
+                    <input type="text" id="inputnome5" class="inputnometodos" maxlength="50">
+                </div>
+                <div id="divcidade5" style="display: flex; flex-direction: column; margin-left: 15px;">
+                    <label for="inputcidade5">Cidade 5:</label>
+                    <input type="text" id="inputcidade5" class="digitandostatus" maxlength="35" style=" width: 150px !important; ">
+                </div>
+                <div id="divunidade5" style="display: flex; flex-direction: column; margin-left: 15px;">
+                    <label for="">Unidade 5:</label>
+                    <select name="unidade5" id="unidade5" class="digitandostatus2">
+                        <option value="CAMPINAS/SP">CAMPINAS/SP</option>
+                        <option value="ANÁPOLIS/GO">ANÁPOLIS/GO</option>
+                        <option value="CARIACICA/ES">CARIACICA/ES</option>
+                        <option value="CARAZINHO/RS">CARAZINHO/RS</option>
+                        <option value="PETROLINA/PE">PETROLINA/PE</option>
+                        <option value="RECIFE/PE">RECIFE/PE</option>
+                        <option value="SETE LAGOAS/MG">SETE LAGOAS/MG</option>
+                        <option value="LINS/SP">LINS/SP</option>
+                        <option value="POUSO ALEGRE/MG">POUSO ALEGRE/MG</option>
+                    </select>
+                </div>
+            </div>
+            <div class="divsbm" id="divbm6" style="display: none;">
+                <div id="divnome6" style="display: flex; flex-direction: column;">
+                    <label for="inputnome6">Ganhador 6:</label>
+                    <input type="text" id="inputnome6" class="inputnometodos" maxlength="50">
+                </div>
+                <div id="divcidade6" style="display: flex; flex-direction: column; margin-left: 15px;">
+                    <label for="inputcidade6">Cidade 6:</label>
+                    <input type="text" id="inputcidade6" class="digitandostatus" maxlength="35" style=" width: 150px !important; ">
+                </div>
+                <div id="divunidade6" style="display: flex; flex-direction: column; margin-left: 15px;">
+                    <label for="">Unidade 6:</label>
+                    <select name="unidade6" id="unidade6" class="digitandostatus2">
+                        <option value="CAMPINAS/SP">CAMPINAS/SP</option>
+                        <option value="ANÁPOLIS/GO">ANÁPOLIS/GO</option>
+                        <option value="CARIACICA/ES">CARIACICA/ES</option>
+                        <option value="CARAZINHO/RS">CARAZINHO/RS</option>
+                        <option value="PETROLINA/PE">PETROLINA/PE</option>
+                        <option value="RECIFE/PE">RECIFE/PE</option>
+                        <option value="SETE LAGOAS/MG">SETE LAGOAS/MG</option>
+                        <option value="LINS/SP">LINS/SP</option>
+                        <option value="POUSO ALEGRE/MG">POUSO ALEGRE/MG</option>
+                    </select>
+                </div>
+            </div>
+
+
+
+
+        </div>
+
+        <div id="divimagem">
+            <div id="divganhador">
+                <p id="nomeganhador">NOME</p>
+                <p id="nomeunidade">UNIDADE</p>
+
+            </div>
+            <div id="divsbatidas">
+                <div id="1batida" style="display: none;">
+                    <fieldset class="fieldsets">
+                        <legend>1ª Batida</legend>
+                        <div id="div1batida" class="divbatidanumeros">
+                            <p id="bmnome1" class="bmnomeclass">NOME</p>
+                            <p class="bmunidade" id="bmunidade1">UNIDADE: </p>
+                        </div>
+                    </fieldset>
+                </div>
+                <div id="2batida" style="display: none;">
+                    <fieldset class="fieldsets">
+                        <legend>2ª Batida</legend>
+                        <div id="div2batida" class="divbatidanumeros">
+                            <p id="bmnome2" class="bmnomeclass">NOME</p>
+                            <p class="bmunidade" id="bmunidade2">UNIDADE: </p>
+                        </div>
+                    </fieldset>
+                </div>
+                <div id="3batida" style="display: none;">
+                    <fieldset class="fieldsets">
+                        <legend>3ª Batida</legend>
+                        <div id="div3batida" class="divbatidanumeros">
+                            <p id="bmnome3" class="bmnomeclass">NOME</p>
+                            <p class="bmunidade" id="bmunidade3">UNIDADE: </p>
+                        </div>
+                    </fieldset>
+                </div>
+                <div id="4batida" style="display: none;">
+                    <fieldset class="fieldsets">
+                        <legend>4ª Batida</legend>
+                        <div id="div4batida" class="divbatidanumeros">
+                            <p id="bmnome4" class="bmnomeclass">NOME</p>
+                            <p class="bmunidade" id="bmunidade4">UNIDADE: </p>
+                        </div>
+                    </fieldset>
+                </div>
+                <div id="5batida" style="display: none;">
+                    <fieldset class="fieldsets">
+                        <legend>5ª Batida</legend>
+                        <div id="div5batida" class="divbatidanumeros">
+                            <p id="bmnome5" class="bmnomeclass">NOME</p>
+                            <p class="bmunidade" id="bmunidade5">UNIDADE: </p>
+                        </div>
+                    </fieldset>
+                </div>
+                <div id="6batida" style="display: none;">
+                    <fieldset class="fieldsets">
+                        <legend>6ª Batida</legend>
+                        <div id="div6batida" class="divbatidanumeros">
+                            <p id="bmnome6" class="bmnomeclass">NOME</p>
+                            <p class="bmunidade" id="bmunidade6">UNIDADE: </p>
+                        </div>
+                    </fieldset>
+                </div>
+
+
+            </div>
+
+
+        </div>
+        <div id="previewImage"></div>
+
+    </div>
+    <div id="status">
+
+    </div>
+    <script>
+        
+        function screenshot(premio) {
+            var premio = premio;
+
+            html2canvas(document.getElementById('divimagem'), { allowTaint: true }).then(function (canvas) {
+
+                //var preview = document.getElementById("previewImage");
+                console.log(canvas);
+                document.getElementById("previewImage").appendChild(canvas);
+
+                var dataURL = canvas.toDataURL('image/png', 2.0);
+                $.ajax({
+                    type: "POST",
+                    url: `${ipapi}save-capture.php`,
+                    data: {
+                        imgBase64: dataURL,
+                        premio: premio
+                    }
+                }).done(function (o) {
+
+                    console.log('saved');
+                });
+            });
+            document.getElementById('divimagem').style.display = 'none';
+        }
+
+        $(function () {
+            
+            const socket = io()
+            socket.nickname = ''
+
+            socket.emit('login', socket.nickname)
+
+            $('.inputnometodos').keyup(function (evt) {
+                socket.emit('statusparado', '')
+            })
+            $('.digitandostatus').keyup(function (evt) {
+                socket.emit('statusparado', '')
+            })
+           
+            $('.inputnometodos').on('keypress paste', function (evt) {
+                var premio = $('#premio').val()
+                socket.emit('status', premio)
+            })
+            $('.digitandostatus').on('keypress paste', function (evt) {
+                var premio = $('#premio').val()
+                socket.emit('status', premio)
+            })
+            $('.digitandostatus2').on('change', function (evt) {
+                var premio = $('#premio').val()
+                socket.emit('status', premio)
+                setTimeout(function () {
+                    socket.emit('statusparado', '')
+                }, 5000);
+            })
+
+            $('#btnenviar').click(function(evt){
+                let premio = $('#premio').val()
+                socket.emit('gerarimagem', premio)
+            })
+
+
+        })
+
+    </script>
+</body>
+
+</html>

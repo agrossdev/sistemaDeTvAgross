@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="sorteio.css">
+    <script src="sorteio.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script type="text/javascript" src="../html2canvas.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@sweetalert2/theme-bulma/bulma.css">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sorteio Roundup</title>
+</head>
+
+<body>
+    <div id="divbackground">
+        <div id="divlogos">
+            <img src="../imagens/Nota Fiscal Premiada.png" alt="" id="imagemgrr">
+            <img src="../imagens/agross.png" alt="">
+            <img src="../imagens/tvagross.png" alt="">
+        </div>
+        <div id="divformulario">
+
+
+            <div id="divnumero1" class="divnumeros">
+                <label for="numero1">Nº 1</label>
+                <input type="text" id="numero1" maxlength="1">
+            </div>
+            <div id="divnumero2" class="divnumeros">
+                <label for="numero2">Nº 2</label>
+                <input type="text" id="numero2" maxlength="1">
+            </div>
+            <div id="divnumero3" class="divnumeros">
+                <label for="numero3">Nº 3</label>
+                <input type="text" id="numero3" maxlength="1">
+            </div>
+            <div id="divnumero4" class="divnumeros">
+                <label for="numero4">Nº 4</label>
+                <input type="text" id="numero4" maxlength="1">
+            </div>
+            <div id="divnumero5" class="divnumeros">
+                <label for="numero4">Nº 5</label>
+                <input type="text" id="numero5" maxlength="1">
+            </div>
+
+            <div>
+                <button type="button" id="btnenviar" onclick="imagemsorteio(numero1, numero2, numero3, numero4, numero5);">GERAR
+                    IMAGEM</button>
+            </div>
+
+            <button type="button" id="btnsalvar" onclick="salvarsorteio();">SALVAR <br>SORTEIO</button>
+            <button type="button" id="btnzerar" onclick="zerarnumeros();">RESETAR <br>NÚMEROS</button>
+
+        </div>
+        <div id="divimagem">
+            <div id="divsorteio">
+                <p id="numerosorteio">9 9 9 9 9</p>
+
+
+            </div>
+
+
+
+        </div>
+        <div id="previewImage"></div>
+    </div>
+    <script>
+        function screenshot(premio) {
+            var premio = premio;
+
+            html2canvas(document.getElementById('divimagem'), { allowTaint: true, scale: 3, windowWidth: Window.innerWidth * 2, windowHeight: Window.innerHeight * 2 }).then(function (canvas) {
+                //var preview = document.getElementById("previewImage");
+
+                var dataURL = canvas.toDataURL();
+                $.ajax({
+                    type: "POST",
+                    url: "save-capture.php",
+                    data: {
+                        imgBase64: dataURL,
+                        premio: premio
+                    }
+                }).done(function (o) {
+
+                    console.log('saved');
+                });
+            });
+
+        }
+    </script>
+    <script>
+        $("#numero1").keypress(function (event) {
+            if (event.keyCode === 13) {
+                $("#btnenviar").click();
+                
+            }
+        });
+        $("#numero2").keypress(function (event) {
+            if (event.keyCode === 13) {
+                $("#btnenviar").click();
+                $("#numero1").focus();
+            }
+        });
+        $("#numero3").keypress(function (event) {
+            if (event.keyCode === 13) {
+                $("#btnenviar").click();
+                $("#numero2").focus();
+            }
+        });
+        $("#numero4").keypress(function (event) {
+            if (event.keyCode === 13) {
+                $("#btnenviar").click();
+                $("#numero3").focus();
+            }
+        });
+        $("#numero5").keypress(function (event) {
+            if (event.keyCode === 13) {
+                $("#btnenviar").click();
+                $("#numero4").focus();
+            }
+        });
+    </script>
+</body>
+
+</html>
